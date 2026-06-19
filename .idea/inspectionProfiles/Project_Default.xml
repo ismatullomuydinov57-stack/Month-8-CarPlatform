@@ -1,0 +1,25 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="Django" />
+          <option value="djangorestframework" />
+          <option value="djangorestframework-simplejwt" />
+          <option value="channels" />
+          <option value="channels-redis" />
+          <option value="redis" />
+          <option value="django-cors-headers" />
+          <option value="Pillow" />
+          <option value="cloudinary" />
+          <option value="django-cloudinary-storage" />
+          <option value="reportlab" />
+          <option value="openpyxl" />
+          <option value="celery" />
+          <option value="django-celery-beat" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
