@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from .models import CarBrand, Car
-from .serializer import CarBrandSerializer, CarSerializer
+from .models import CarBrand, Car, Comment
+from .serializer import CarBrandSerializer, CarSerializer, CommentSerializer
 
 
 class CarBrandAPIView(ListCreateAPIView):
@@ -39,6 +39,15 @@ class CarAPIView(ListCreateAPIView):
 class CarDetailAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
+
+
+class CommentAPIView(ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+class CommentDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
 
 
