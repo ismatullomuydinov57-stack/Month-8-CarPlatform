@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from .models import CarBrand, Car, Comment
 from .serializer import CarBrandSerializer, CarSerializer, CommentSerializer
+from .permissions import MyIsAuthenticatedOrReadOnly
 
 
 class CarBrandAPIView(ListCreateAPIView):
@@ -44,10 +45,17 @@ class CarDetailAPIView(RetrieveUpdateDestroyAPIView):
 class CommentAPIView(ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = [MyIsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.validated_data["user"]=self.request.user
+        serializer.validated_data["car_id"]=self.kwargs.get("car_id")
+        serializer.save()
 
 class CommentDetailAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = [MyIsAuthenticatedOrReadOnly]
 
 
 
