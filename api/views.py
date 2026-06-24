@@ -3,30 +3,26 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from .models import CarBrand, Car, Comment
 from .serializer import CarBrandSerializer, CarSerializer, CommentSerializer
 from .permissions import MyIsAuthenticatedOrReadOnly
+from rest_framework.viewsets import ModelViewSet
 
 
-class CarBrandAPIView(ListCreateAPIView):
+class CarBrandAPIViewSet(ModelViewSet):
     queryset = CarBrand.objects.all()
     serializer_class = CarBrandSerializer
 
-class CarBrandDetailAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = CarBrand.objects.all()
-    serializer_class = CarBrandSerializer
-
-
-class CarAPIView(ListCreateAPIView):
+class CarAPIViewSet(ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
 
     def get_queryset(self):
-        brand_id=self.kwargs.get("brand_id", None)
+        brand_id = self.kwargs.get("brand_id", None)
         min_price = self.request.query_params.get("min_price")
         max_price = self.request.query_params.get("max_price")
 
         if brand_id:
-            queryset=Car.objects.filter(brand_id=brand_id)
+            queryset = Car.objects.filter(brand_id=brand_id)
         else:
-            queryset=Car.objects.all()
+            queryset = Car.objects.all()
         if min_price:
             queryset = queryset.filter(price__gte=min_price)
         elif max_price:
@@ -36,13 +32,7 @@ class CarAPIView(ListCreateAPIView):
     lookup_field = 'pk'
     lookup_url_kwarg = 'brand_id'
 
-
-class CarDetailAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Car.objects.all()
-    serializer_class = CarSerializer
-
-
-class CommentAPIView(ListCreateAPIView):
+class CommentAPIViewSet(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [MyIsAuthenticatedOrReadOnly]
@@ -52,10 +42,58 @@ class CommentAPIView(ListCreateAPIView):
         serializer.validated_data["car_id"]=self.kwargs.get("car_id")
         serializer.save()
 
-class CommentDetailAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-    permission_classes = [MyIsAuthenticatedOrReadOnly]
+
+# class CarBrandAPIView(ListCreateAPIView):
+#     queryset = CarBrand.objects.all()
+#     serializer_class = CarBrandSerializer
+#
+# class CarBrandDetailAPIView(RetrieveUpdateDestroyAPIView):
+#     queryset = CarBrand.objects.all()
+#     serializer_class = CarBrandSerializer
+#
+#
+# class CarAPIView(ListCreateAPIView):
+#     queryset = Car.objects.all()
+#     serializer_class = CarSerializer
+#
+    # def get_queryset(self):
+    #     brand_id=self.kwargs.get("brand_id", None)
+    #     min_price = self.request.query_params.get("min_price")
+    #     max_price = self.request.query_params.get("max_price")
+    #
+    #     if brand_id:
+    #         queryset=Car.objects.filter(brand_id=brand_id)
+    #     else:
+    #         queryset=Car.objects.all()
+    #     if min_price:
+    #         queryset = queryset.filter(price__gte=min_price)
+    #     elif max_price:
+    #         queryset = queryset.filter(price__lte=max_price)
+    #     return queryset
+    #
+    # lookup_field = 'pk'
+    # lookup_url_kwarg = 'brand_id'
+#
+#
+# class CarDetailAPIView(RetrieveUpdateDestroyAPIView):
+#     queryset = Car.objects.all()
+#     serializer_class = CarSerializer
+#
+#
+# class CommentAPIView(ListCreateAPIView):
+#     queryset = Comment.objects.all()
+#     serializer_class = CommentSerializer
+#     permission_classes = [MyIsAuthenticatedOrReadOnly]
+#
+#     def perform_create(self, serializer):
+#         serializer.validated_data["user"]=self.request.user
+#         serializer.validated_data["car_id"]=self.kwargs.get("car_id")
+#         serializer.save()
+
+# class CommentDetailAPIView(RetrieveUpdateDestroyAPIView):
+#     queryset = Comment.objects.all()
+#     serializer_class = CommentSerializer
+#     permission_classes = [MyIsAuthenticatedOrReadOnly]
 
 
 
