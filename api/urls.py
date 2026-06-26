@@ -4,8 +4,8 @@ from rest_framework.routers import SimpleRouter
 
 
 router=SimpleRouter()
-router.register('brands', CarBrandAPIViewSet)
-router.register('cars', CarAPIViewSet)
+router.register('brands', CarBrandAPIViewSet, basename='carbrand')
+router.register('cars', CarAPIViewSet, basename='car')
 router.register('comments', CommentAPIViewSet)
 
 urlpatterns=[

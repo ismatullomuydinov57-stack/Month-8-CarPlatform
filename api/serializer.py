@@ -2,18 +2,37 @@ from rest_framework import serializers
 
 from .models import CarBrand, Car, Comment
 
+class CarSerializerForBrand(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = '__all__'
 
-class CarBrandSerializer(serializers.ModelSerializer):
+class BrandSerializerForCar(serializers.ModelSerializer):
     class Meta:
         model = CarBrand
         fields = '__all__'
 
+
+class CarBrandSerializer(serializers.ModelSerializer):
+    # cars=serializers.StringRelatedField(many=True, read_only=True)
+    # cars=serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    # cars=serializers.SlugRelatedField(many=True, read_only=True, slug_field='model_name'),
+    # cars=serializers.HyperlinkedRelatedField(many=True, read_only=True,view_name='car-detail')
+
+    cars=CarSerializerForBrand(many=True, read_only=True)
+
+
+    class Meta:
+        model = CarBrand
+        fields = ['id', 'name', 'country', 'cars']
+
 class CarSerializer(serializers.ModelSerializer):
     my_brand=serializers.ChoiceField(choices=CarBrand.objects.all(), write_only=True)
+    brand=BrandSerializerForCar(read_only=True)
     class Meta:
         model = Car
         fields = '__all__'
-        depth=1
+        extra_kwargs={'brand':{'write_only':True}}
 
     def create(self, validated_data):
         brand=validated_data.pop("my_brand")

@@ -14,7 +14,7 @@ class Car(models.Model):
     price=models.DecimalField(max_digits=10, decimal_places=2)
     color=models.TextField()
     year=models.DateField()
-    brand=models.ForeignKey(CarBrand, on_delete=models.CASCADE)
+    brand=models.ForeignKey(CarBrand, on_delete=models.CASCADE, related_name='cars')
 
     def __str__(self):
         return self.model_name
